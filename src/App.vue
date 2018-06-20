@@ -1,28 +1,50 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <ul id="restaurant-list">
+    <RestaurantCard/>
+    </ul>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+import RestaurantCard from "./components/RestaurantCard.vue";
 export default {
-  name: 'app',
+  name: "app",
   components: {
-    HelloWorld
+    RestaurantCard
+  },
+  data() {
+    return {
+      restaurants: []
+    };
+  },
+  methods: {
+    getRestaurants(url) {
+      fetch(url)
+        .then(res => {
+        
+          return res.json();
+        })
+        .then(res => {
+          console.log(res)
+          this.restaurants = res;
+        });
+    }
+  },
+  created() {
+    const url = "http://localhost:1337/restaurants"
+    this.getRestaurants(url);
+
   }
-}
+};
 </script>
 
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+#restaurants-list {
+  background-color: #f3f3f3;
+  list-style: outside none none;
+  margin: 0;
+  padding: 30px 15px 60px;
   text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
 }
 </style>
